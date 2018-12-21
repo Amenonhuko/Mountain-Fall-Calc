@@ -1,0 +1,55 @@
+# Imports all relevant libraries that will be used in later code
+
+import numpy as np  
+
+import matplotlib.pyplot as plt  
+
+# Variables
+
+height_total = 1261
+
+height_actual = 0
+
+radius = 6760
+
+nodes=1000
+
+# Mass Minus each layer
+
+answermass = []
+for i in range (1,nodes+1):
+        radius_new = radius*abs(height_total-height_actual)/height_total
+        massx = np.pi*((radius_new)**2)*abs(height_total-height_actual)/3*2750
+        answermass.append(massx)
+        height_actual = height_actual + (height_total/nodes)
+        
+#print(answermass)
+
+# Mass Per Layer
+
+
+mat= np.zeros((nodes))
+
+for i in range (0, nodes-1):
+    mat[i] = answermass[i]-answermass[i+1]
+    mat[nodes-1] = answermass[nodes-1]
+    
+# Velocity of Falling
+
+
+vel=[]
+for i in range (1,nodes+1):
+    v = np.sqrt(2*9.8*height_actual)
+    vel.append(v)
+    height_actual = height_actual + (height_total/nodes)
+    
+print(vel[nodes-1])
+    
+# Kinetic Energy
+
+Kinetic = []
+for i in range (0,nodes-1):
+    KE = 0.5*mat[i]*(vel[i])**2
+    Kinetic.append(KE)
+    
+np.sum(Kinetic)
